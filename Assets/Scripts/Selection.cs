@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Selection : MonoBehaviour
 {
@@ -37,34 +38,13 @@ public class Selection : MonoBehaviour
             selectionBox.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 0);
             selectionBox.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 0);
         }
-        else if (Input.GetMouseButtonUp(0))
-        {
-            selecting = false;
-            selectionBox.gameObject.SetActive(false);
 
-            foreach (var selected in selected)
-            {
-                var selectable = selected.GetComponent<Selectable>();
-                if (!highlighted.Contains(selectable))
-                    selectable.ToggleSelected(false);
-            }
-
-            selected.Clear();
-            foreach (var selectable in highlighted)
-            {
-                selectable.ToggleHighlighted(false);
-                selectable.ToggleSelected(true);
-                selected.Add(selectable.gameObject);
-            }
-            highlighted.Clear();
-        }
+        var mousePos = Input.mousePosition;
+        var mousePosX = Mathf.Clamp(mousePos.x, 0, Screen.width);
+        var mousePosY = Mathf.Clamp(mousePos.y, 0, Screen.height);
 
         if (selecting)
         {
-            var mousePos = Input.mousePosition;
-            var mousePosX = Mathf.Clamp(mousePos.x, 0, Screen.width);
-            var mousePosY = Mathf.Clamp(mousePos.y, 0, Screen.height);
-
             var scaleX = 1f;
             var scaleY = 1f;
             if (mousePosX >= originX)
@@ -95,7 +75,7 @@ public class Selection : MonoBehaviour
             float pixelsToWorld = 2f * worldCamera.orthographicSize / Screen.height; // https://forum.unity.com/threads/boxcastall-to-get-all-objects-within-rts-style-selection.450882/#post-3877612
             var worldHalfExtents = halfExtents * pixelsToWorld;
 
-            var hits = Physics.BoxCastAll(worldCenter, worldHalfExtents, worldCamera.transform.forward, worldCamera.transform.rotation, 100f, ~LayerMask.NameToLayer("Human"));
+            var hits = Physics.BoxCastAll(worldCenter, worldHalfExtents, worldCamera.transform.forward, worldCamera.transform.rotation, 100f, LayerMask.GetMask("Human"));
 
             var newHighlighted = new HashSet<Selectable>();
             foreach (var collider in hits)
@@ -110,6 +90,42 @@ public class Selection : MonoBehaviour
                 selectable.ToggleHighlighted(false);
 
             highlighted = newHighlighted;
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            selecting = false;
+            selectionBox.gameObject.SetActive(false);
+
+            foreach (var selected in selected)
+            {
+                var selectable = selected.GetComponent<Selectable>();
+                if (!highlighted.Contains(selectable))
+                    selectable.ToggleSelected(false);
+            }
+
+            selected.Clear();
+            foreach (var selectable in highlighted)
+            {
+                selectable.ToggleHighlighted(false);
+                selectable.ToggleSelected(true);
+                selected.Add(selectable.gameObject);
+            }
+            highlighted.Clear();
+        }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            RaycastHit hit;
+            var isHit = Physics.Raycast(worldCamera.ScreenPointToRay(new Vector3(mousePosX, mousePosY, 0f)), out hit, 100f, LayerMask.GetMask("Ground"));
+            if (isHit)
+            {
+                foreach (var selected in selected)
+                {
+                    var agent = selected.GetComponent<NavMeshAgent>();
+                    agent.SetDestination(hit.point);
+                }
+            }
         }
     }
 }
