@@ -7,9 +7,6 @@ public class Beetle : MonoBehaviour
     Animator animator = null;
 
     [SerializeField]
-    Animation deathAnimation = null;
-
-    [SerializeField]
     NavMeshAgent agent = null;
 
     Human target = null;
@@ -103,7 +100,6 @@ public class Beetle : MonoBehaviour
         gameObject.layer = 0;
 
         animator.SetTrigger("Death");
-        //deathAnimation.Play();
 
         agent.enabled = false;
         GetComponent<Selectable>().enabled = false;
