@@ -46,7 +46,9 @@ public class Beetle : MonoBehaviour
 
         foreach (var human in humans)
         {
-            var distance = Vector3.Distance(thisPosition, human.transform.position);
+            NavMeshPath path = new NavMeshPath();
+            agent.CalculatePath(human.transform.position, path);
+            var distance = PathLength(path);
 
             if (distance < closestDistance)
             {
@@ -104,5 +106,17 @@ public class Beetle : MonoBehaviour
         agent.enabled = false;
         GetComponent<Selectable>().enabled = false;
         enabled = false;
+    }
+
+    // https://forum.unity.com/threads/getting-the-distance-in-nav-mesh.315846/#post-2052142
+    static float PathLength(NavMeshPath path)
+    {
+        float length = 0f;
+
+        if (path.status != NavMeshPathStatus.PathInvalid && path.corners.Length > 1)
+            for (int i = 1; i < path.corners.Length; i++)
+                length += Vector3.Distance(path.corners[i - 1], path.corners[i]);
+
+        return length;
     }
 }
