@@ -113,6 +113,8 @@ public class Selection : MonoBehaviour
             highlighted.Clear();
         }
 
+        RemoveDead();
+
         if (Input.GetMouseButtonDown(1))
         {
             RaycastHit hit;
@@ -126,6 +128,26 @@ public class Selection : MonoBehaviour
             else
                 foreach (var selected in selected)
                     selected.GetComponent<Human>().MoveTo(hit.point);
+        }
+    }
+
+    void RemoveDead()
+    {
+        var toRemove = new List<GameObject>();
+        foreach (var selected in selected)
+        {
+            if (selected.tag != "Human")
+            {
+                var selectable = selected.GetComponent<Selectable>();
+                selectable.ToggleHighlighted(false);
+                selectable.ToggleSelected(false);
+                toRemove.Add(selected);
+            }
+        }
+
+        foreach (var removal in toRemove)
+        {
+            selected.Remove(removal);
         }
     }
 }

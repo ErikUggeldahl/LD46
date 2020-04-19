@@ -12,14 +12,23 @@ public class Human : MonoBehaviour
     [SerializeField]
     LineRenderer attackLine = null;
 
+    [SerializeField]
+    Animation muzzleFlash = null;
+
+    [SerializeField]
+    GameObject laserObject = null;
+
+    [SerializeField]
+    Transform muzzlePoint = null;
+
     enum State
     {
         Idle = 0,
         Moving = 1,
         Attacking = 2,
+        Dead = 3,
     }
     State state;
-
 
     const float ATTACK_DISTANCE = 8f;
     const float ENEMY_SCAN_PERIOD = 0.5f;
@@ -97,9 +106,9 @@ public class Human : MonoBehaviour
 
     public void Attack(GameObject enemy)
     {
-        if (!enemy)
+        if (!enemy || enemy.tag != "Enemy")
         {
-            state = State.Idle;
+            Stop();
             return;
         }
 
@@ -131,5 +140,31 @@ public class Human : MonoBehaviour
             agent.SetDestination(transform.position);
             animator.SetInteger("State", (int)State.Attacking);
         }
+    }
+
+    void GunFired()
+    {
+        muzzleFlash.Play();
+        var laser = Instantiate(laserObject, muzzlePoint.position, Quaternion.identity);
+        if (targetEnemy)
+        {
+            laser.GetComponent<Laser>().SetTarget(targetEnemy.transform.position);
+            targetEnemy.GetComponent<Health>().Damage(1);
+        }
+    }
+
+    public void OnDie()
+    {
+        state = State.Dead;
+
+        tag = "Untagged";
+        gameObject.layer = 0;
+
+        animator.SetInteger("State", (int)State.Dead);
+
+        agent.enabled = false;
+        attackLine.enabled = false;
+        GetComponent<Selectable>().enabled = false;
+        enabled = false;
     }
 }

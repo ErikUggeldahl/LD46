@@ -4,12 +4,22 @@ using UnityEngine.AI;
 public class Beetle : MonoBehaviour
 {
     [SerializeField]
+    Animator animator = null;
+
+    [SerializeField]
+    Animation deathAnimation = null;
+
+    [SerializeField]
     NavMeshAgent agent = null;
 
     Human target = null;
 
-    float targetAdjustmentTimer = 0f;
     const float TARGET_ADJUSTMENT_PERIOD = 0.5f;
+    float targetAdjustmentTimer = 0f;
+
+    const float ATTACK_RADIUS = 2f;
+    const float ATTACK_PERIOD = 1f;
+    float attackTimer = 0f;
 
     void Start()
     {
@@ -18,7 +28,15 @@ public class Beetle : MonoBehaviour
 
     void Update()
     {
-        ChaseTarget();
+        if (!target)
+        {
+            FindTarget();
+        }
+        else
+        {
+            ChaseTarget();
+            Attack();
+        }
     }
 
     void FindTarget()
@@ -52,8 +70,43 @@ public class Beetle : MonoBehaviour
             if (targetAdjustmentTimer >= TARGET_ADJUSTMENT_PERIOD)
             {
                 targetAdjustmentTimer -= TARGET_ADJUSTMENT_PERIOD;
-                agent.SetDestination(target.transform.position);
+
+                if (target.tag == "Human")
+                    agent.SetDestination(target.transform.position);
+                else
+                    target = null;
             }
         }
+    }
+
+    void Attack()
+    {
+        if (target && Vector3.Distance(target.transform.position, transform.position) < ATTACK_RADIUS)
+        {
+            attackTimer += Time.deltaTime;
+            if (attackTimer >= ATTACK_PERIOD)
+            {
+                attackTimer -= ATTACK_PERIOD;
+
+                var remainingHealth = target.GetComponent<Health>().Damage(1);
+                if (remainingHealth == 0)
+                {
+                    target = null;
+                }
+            }
+        }
+    }
+
+    void OnDie()
+    {
+        tag = "Untagged";
+        gameObject.layer = 0;
+
+        animator.SetTrigger("Death");
+        //deathAnimation.Play();
+
+        agent.enabled = false;
+        GetComponent<Selectable>().enabled = false;
+        enabled = false;
     }
 }

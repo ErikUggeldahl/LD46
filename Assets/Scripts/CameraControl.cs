@@ -30,15 +30,15 @@ public class CameraControl : MonoBehaviour
         var bottomEdge = Screen.height * EDGE_THRESHOLD;
         var topEdge = Screen.height * (1f - EDGE_THRESHOLD);
 
-        if (mousePosX < leftEdge)
-            x = (mousePosX / Screen.width / EDGE_THRESHOLD - 1f);
-        else if (mousePos.x > rightEdge)
-            x = ((mousePosX / Screen.width) - (1f - EDGE_THRESHOLD)) / EDGE_THRESHOLD;
+        //if (mousePosX < leftEdge)
+        //    x = (mousePosX / Screen.width / EDGE_THRESHOLD - 1f);
+        //else if (mousePos.x > rightEdge)
+        //    x = ((mousePosX / Screen.width) - (1f - EDGE_THRESHOLD)) / EDGE_THRESHOLD;
 
-        if (mousePosY < bottomEdge)
-            y = (mousePosY / Screen.height / EDGE_THRESHOLD - 1f);
-        else if (mousePosY > topEdge)
-            y = ((mousePosY / Screen.height) - (1f - EDGE_THRESHOLD)) / EDGE_THRESHOLD;
+        //if (mousePosY < bottomEdge)
+        //    y = (mousePosY / Screen.height / EDGE_THRESHOLD - 1f);
+        //else if (mousePosY > topEdge)
+        //    y = ((mousePosY / Screen.height) - (1f - EDGE_THRESHOLD)) / EDGE_THRESHOLD;
 
         var movement = (new Vector3(x, 0f, -x) + new Vector3(y, 0f, y)) * CAMERA_SPEED * Time.deltaTime;
 

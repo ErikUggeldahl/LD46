@@ -232,11 +232,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1410409933061260054}
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: 0, y: 0.43, z: 0.591}
+  m_LocalRotation: {x: 0.7002877, y: 0.00000025752882, z: 0.00000014534663, w: 0.71386075}
+  m_LocalPosition: {x: 0, y: 1.3721762, z: -0.16922377}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 8968431156202860030}
+  m_Father: {fileID: 979421271316190671}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!108 &481393121789851534
@@ -483,6 +483,7 @@ Transform:
   - {fileID: 4371926190360147382}
   - {fileID: 8661715199616607438}
   - {fileID: 3266455581229460389}
+  - {fileID: 654901550417422437}
   m_Father: {fileID: 4672570619171464816}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -592,6 +593,7 @@ GameObject:
   - component: {fileID: 5718918795371560460}
   - component: {fileID: 2874072336429696612}
   - component: {fileID: 120504661787744808}
+  - component: {fileID: 6241053637230913776}
   m_Layer: 10
   m_Name: Beetle
   m_TagString: Enemy
@@ -616,7 +618,6 @@ Transform:
   - {fileID: 3878825538215129043}
   - {fileID: 234021930720769183}
   - {fileID: 4707629912553629819}
-  - {fileID: 654901550417422437}
   - {fileID: 385278559836102943}
   - {fileID: 7399889903085043354}
   m_Father: {fileID: 0}
@@ -675,6 +676,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4be2ae4b4fcdbef429159250731d2266, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 1368046860229460100}
+  deathAnimation: {fileID: 0}
   agent: {fileID: 3592952862688778685}
 --- !u!114 &2874072336429696612
 MonoBehaviour:
@@ -703,6 +706,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.45, y: 1.16, z: 1.95}
   m_Center: {x: 0, y: 0.56, z: 0}
+--- !u!114 &6241053637230913776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5344960520410800109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08d10af901433814d9cda6c540374fda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 20
+  healthBarObj: {fileID: 4975547040972098216, guid: 758ddd12d48c5144b96ff929fe2c646f,
+    type: 3}
 --- !u!1 &5792889112361231356
 GameObject:
   m_ObjectHideFlags: 0
@@ -1155,7 +1173,7 @@ PrefabInstance:
     - target: {fileID: 227049304029611026, guid: 94c40683da15b1e4f9843171cbc2d5e9,
         type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 227049304029611026, guid: 94c40683da15b1e4f9843171cbc2d5e9,
         type: 3}
@@ -1241,7 +1259,7 @@ PrefabInstance:
     - target: {fileID: 469227493652868459, guid: 94153c3141838274a9ea67d78144d544,
         type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 469227493652868459, guid: 94153c3141838274a9ea67d78144d544,
         type: 3}
