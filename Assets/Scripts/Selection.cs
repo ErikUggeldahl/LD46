@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class Selection : MonoBehaviour
 {
@@ -122,8 +121,8 @@ public class Selection : MonoBehaviour
             {
                 foreach (var selected in selected)
                 {
-                    var agent = selected.GetComponent<NavMeshAgent>();
-                    agent.SetDestination(hit.point);
+                    var human = selected.GetComponent<Human>();
+                    human.MoveTo(hit.point);
                 }
             }
         }
