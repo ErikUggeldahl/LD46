@@ -5,6 +5,9 @@ public class CameraControl : MonoBehaviour
     [SerializeField]
     Transform worldCamera = null;
 
+    Camera worldCameraCamera;
+    float defaultCameraOrthoSize;
+
     const float CAMERA_SPEED = 8f;
 
     const float EDGE_THRESHOLD = 0.05f;
@@ -14,6 +17,8 @@ public class CameraControl : MonoBehaviour
 
     void Start()
     {
+        worldCameraCamera = worldCamera.GetComponent<Camera>();
+        defaultCameraOrthoSize = worldCameraCamera.orthographicSize;
     }
 
     void Update()
@@ -40,8 +45,13 @@ public class CameraControl : MonoBehaviour
         //else if (mousePosY > topEdge)
         //    y = ((mousePosY / Screen.height) - (1f - EDGE_THRESHOLD)) / EDGE_THRESHOLD;
 
-        var movement = (new Vector3(x, 0f, -x) + new Vector3(y, 0f, y)) * CAMERA_SPEED * Time.deltaTime;
+        var zoomSpeedFactor = worldCameraCamera.orthographicSize / defaultCameraOrthoSize;
+
+        var movement = (new Vector3(x, 0f, -x) + new Vector3(y, 0f, y)) * CAMERA_SPEED * zoomSpeedFactor * Time.deltaTime;
 
         worldCamera.Translate(movement, Space.World);
+
+        var scroll = Input.mouseScrollDelta.y;
+        worldCameraCamera.orthographicSize = Mathf.Clamp(worldCameraCamera.orthographicSize - scroll * 0.5f, 3f, 10f);
     }
 }
