@@ -116,15 +116,16 @@ public class Selection : MonoBehaviour
         if (Input.GetMouseButtonDown(1))
         {
             RaycastHit hit;
-            var isHit = Physics.Raycast(worldCamera.ScreenPointToRay(new Vector3(mousePosX, mousePosY, 0f)), out hit, 100f, LayerMask.GetMask("Ground"));
-            if (isHit)
-            {
+            var isHit = Physics.Raycast(worldCamera.ScreenPointToRay(new Vector3(mousePosX, mousePosY, 0f)), out hit, 100f, LayerMask.GetMask("Ground", "Enemy"));
+            if (!isHit)
+                return;
+
+            if (hit.collider.gameObject.tag == "Enemy")
                 foreach (var selected in selected)
-                {
-                    var human = selected.GetComponent<Human>();
-                    human.MoveTo(hit.point);
-                }
-            }
+                    selected.GetComponent<Human>().Attack(hit.collider.gameObject);
+            else
+                foreach (var selected in selected)
+                    selected.GetComponent<Human>().MoveTo(hit.point);
         }
     }
 }
