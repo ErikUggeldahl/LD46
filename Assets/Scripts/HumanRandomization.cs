@@ -30,13 +30,18 @@ public class HumanRandomization : MonoBehaviour
     {
         var randomSkin = Random.Range(0, skin.Length);
         var randomEyes = Random.Range(0, eyes.Length);
-        var randomShirt = Random.Range(0, shirts.Length);
         var randomPants = Random.Range(0, pants.Length);
 
         skinRenderer.material = skin[randomSkin];
         eyesRenderer.material = eyes[randomEyes];
         pantsRenderer.material = pants[randomPants];
-        foreach (var shirtRenderer in shirtRenderers)
-            shirtRenderer.material = shirts[randomShirt];
+
+        var survivor = GetComponent<Survivor>();
+        if (!(survivor && survivor.survivor))
+        {
+            var randomShirt = Random.Range(0, shirts.Length);
+            foreach (var shirtRenderer in shirtRenderers)
+                shirtRenderer.material = shirts[randomShirt];
+        }
     }
 }

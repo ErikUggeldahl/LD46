@@ -28,16 +28,12 @@ public class Human : MonoBehaviour
         Attacking = 2,
         Dead = 3,
     }
-    State state;
+    State state = State.Idle;
 
     const float ATTACK_DISTANCE = 8f;
     const float ENEMY_SCAN_PERIOD = 0.5f;
     float enemyScanTimer = 0f;
     GameObject targetEnemy = null;
-
-    void Start()
-    {
-    }
 
     void Update()
     {
@@ -67,10 +63,12 @@ public class Human : MonoBehaviour
 
     public void MoveTo(Vector3 target)
     {
+        print(name + " Move to " + target);
         state = State.Moving;
         targetEnemy = null;
 
-        agent.SetDestination(target);
+        var success = agent.SetDestination(target);
+        print("Pathing successful: " + success);
         animator.SetInteger("State", (int)State.Moving);
         attackLine.gameObject.SetActive(false);
     }
@@ -83,11 +81,10 @@ public class Human : MonoBehaviour
             enemyScanTimer -= ENEMY_SCAN_PERIOD;
 
             var enemies = GameObject.FindGameObjectsWithTag("Enemy");
+            var thisPosition = transform.position;
 
             var closestDistance = float.PositiveInfinity;
             GameObject closestEnemy = null;
-
-            var thisPosition = transform.position;
 
             foreach (var enemy in enemies)
             {

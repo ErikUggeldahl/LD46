@@ -8,8 +8,9 @@ public class Health : MonoBehaviour
     [SerializeField]
     GameObject healthBarObj = null;
 
-    int health;
+    public int health;
 
+    GameObject healthBarInst;
     HealthBar healthBar;
 
     void Start()
@@ -17,7 +18,7 @@ public class Health : MonoBehaviour
         health = maxHealth;
 
         var canvas = GameObject.Find("/HealthBarCanvas").transform;
-        var healthBarInst = Instantiate(healthBarObj, canvas);
+        healthBarInst = Instantiate(healthBarObj, canvas);
         healthBar = healthBarInst.GetComponent<HealthBar>();
         healthBar.SetTracking(transform);
         healthBar.SetDisplay(1f);
@@ -32,6 +33,7 @@ public class Health : MonoBehaviour
         if (health == 0)
         {
             BroadcastMessage("OnDie");
+            Destroy(healthBarInst);
             enabled = false;
         }
 

@@ -9,17 +9,29 @@ public class Beetle : MonoBehaviour
     [SerializeField]
     NavMeshAgent agent = null;
 
+    [SerializeField]
+    int damage = 1;
+
+    [SerializeField]
+    float speedFactor = 1f;
+
+    [SerializeField]
+    float scaleFactor = 1f;
+
     Human target = null;
 
     const float TARGET_ADJUSTMENT_PERIOD = 0.5f;
     float targetAdjustmentTimer = 0f;
 
-    const float ATTACK_RADIUS = 2f;
+    const float ATTACK_RADIUS = 2.5f;
     const float ATTACK_PERIOD = 1f;
-    float attackTimer = 0f;
+    float attackTimer = ATTACK_PERIOD;
 
     void Start()
     {
+        agent.speed *= speedFactor;
+        transform.localScale = new Vector3(scaleFactor, scaleFactor, scaleFactor);
+
         FindTarget();
     }
 
@@ -39,10 +51,9 @@ public class Beetle : MonoBehaviour
     void FindTarget()
     {
         var humans = GameObject.FindGameObjectsWithTag("Human");
+        var thisPosition = transform.position;
 
         var closestDistance = float.PositiveInfinity;
-
-        var thisPosition = transform.position;
 
         foreach (var human in humans)
         {
@@ -87,7 +98,7 @@ public class Beetle : MonoBehaviour
             {
                 attackTimer -= ATTACK_PERIOD;
 
-                var remainingHealth = target.GetComponent<Health>().Damage(1);
+                var remainingHealth = target.GetComponent<Health>().Damage(damage);
                 if (remainingHealth == 0)
                 {
                     target = null;

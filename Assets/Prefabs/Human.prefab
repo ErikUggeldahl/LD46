@@ -1189,6 +1189,7 @@ GameObject:
   - component: {fileID: 4928025166966304719}
   - component: {fileID: 2100243864896354233}
   - component: {fileID: 1626964634875583940}
+  - component: {fileID: -86453520996797051}
   m_Layer: 9
   m_Name: Human
   m_TagString: Human
@@ -1244,7 +1245,7 @@ Animator:
   m_GameObject: {fileID: 5221769546815694454}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 1fdf418d8ec11804182ef4302c994312, type: 3}
-  m_Controller: {fileID: 9100000, guid: 603cf7c132fc59b4bacf05997dee19f8, type: 2}
+  m_Controller: {fileID: 9100000, guid: b23ffdace4d329e45a8eb899c698cc5a, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1355,6 +1356,27 @@ MonoBehaviour:
   pants:
   - {fileID: 2100000, guid: e1acf86c7447abc4ca4b1f1cc695dba0, type: 2}
   - {fileID: 2100000, guid: c4c929473d8f4554b9f376f9a112d46f, type: 2}
+--- !u!114 &-86453520996797051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5221769546815694454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d4baceeadff5ea4da039bcb10a86e70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  survivor: 0
+  animator: {fileID: 6453948908555325339}
+  shirtRenderers:
+  - {fileID: 5348953617711371808}
+  - {fileID: 7244179780076229453}
+  survivorShirt: {fileID: 2100000, guid: 8a703824c1a651645915e7dc4eda3024, type: 2}
+  humanShirts:
+  - {fileID: 2100000, guid: 4ffac162dc61c89469bd0cf219fcbf28, type: 2}
+  - {fileID: 2100000, guid: ece4776fc354cb94d88f69cd6a62d178, type: 2}
 --- !u!1 &6286489141444409349
 GameObject:
   m_ObjectHideFlags: 0

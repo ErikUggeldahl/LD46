@@ -6,10 +6,6 @@ public class Laser : MonoBehaviour
 
     const float SPEED = 30f;
 
-    void Start()
-    {
-    }
-
     void Update()
     {
         transform.LookAt(target);
